@@ -24,7 +24,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
-    // Testing connection
+
     @Autowired
     private CategoryService categoryService;
 
