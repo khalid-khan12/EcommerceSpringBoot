@@ -3,6 +3,7 @@ package com.ecom.shopping_cart.impl;
 import com.ecom.shopping_cart.model.Product;
 import com.ecom.shopping_cart.repository.ProductRepository;
 import com.ecom.shopping_cart.service.ProductService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
@@ -49,7 +50,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product updateProduct(Product product, MultipartFile image) throws IOException{
+    public Product updateProduct(Product product, MultipartFile image, HttpSession session) throws IOException{
 
         Product dbProduct = getProductById(product.getId());
         String imageName = image.isEmpty() ? dbProduct.getImage() : image.getOriginalFilename();
@@ -60,8 +61,14 @@ public class ProductServiceImpl implements ProductService {
         dbProduct.setDescription(product.getDescription());
         dbProduct.setImage(imageName);
         dbProduct.setStock(product.getStock());
+        dbProduct.setDiscount(product.getDiscount());
+
+        Double discount = product.getPrice() * (product.getDiscount() / 100.0);
+        Double discountPrice = product.getPrice() - discount;
+        dbProduct.setDiscountPrice(discountPrice);
 
         Product updateProduct = productRepository.save(dbProduct);
+
         if(!Objects.isNull(updateProduct)){
             if(!image.isEmpty()){
                 try {

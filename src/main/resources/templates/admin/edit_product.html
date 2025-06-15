@@ -33,17 +33,31 @@
                                 <label>Enter Description</label>
                                 <textarea class="form-control" rows="3" name="description" >[[${product.description}]]</textarea>
                             </div>
-                            <div class="mb-3">
-                                <label>Category</label>
-                                <select class="form-control" name="category">
-                                    <option>[[${product.category}]]</option>
-                                    <option th:each="c:${categories}">[[${c.name}]]</option>
-                                </select>
+                            <div class="row">
+                                <div class="mb-3 col">
+                                    <label>Category</label>
+                                    <select class="form-control" name="category">
+                                        <option>[[${product.category}]]</option>
+                                        <option th:each="c:${categories}">[[${c.name}]]</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3 col">
+                                    <label>Enter Price</label>
+                                    <input type="number" name="price" class="form-control" th:value="${product.price}">
+                                </div>
                             </div>
-                            <div class="mb-3">
-                                <label>Enter Price</label>
-                                <input type="number" name="price" class="form-control" th:value="${product.price}">
+
+                            <div class="row">
+                                <div class="mb-3 col">
+                                    <label>Discount</label>
+                                    <input type="number" name="discount" class="form-control" th:value="${product.discount}">
+                                </div>
+                                <div class="mb-3 col">
+                                    <label>Discount Price</label>
+                                    <input type="number" class="form-control" th:value="${product.discountPrice}" readonly>
+                                </div>
                             </div>
+
                             <div class="row">
                                 <div class="mb-3 col">
                                     <label>Enter Stock</label>

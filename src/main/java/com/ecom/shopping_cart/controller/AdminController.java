@@ -121,6 +121,8 @@ public class AdminController {
         String imageName = image.isEmpty()? "default.jpg" : image.getOriginalFilename();
 
         product.setImage(imageName);
+        product.setDiscount(0);
+        product.setDiscountPrice(product.getPrice());
 
         Product savedProduct = productService.saveProduct(product);
 
@@ -128,7 +130,6 @@ public class AdminController {
             if(!image.isEmpty()) {
                 File saveFile = new ClassPathResource("static/img").getFile();
                 Path path = Paths.get(saveFile.getAbsolutePath() + File.separator + "product_img" + File.separator + image.getOriginalFilename());
-                System.out.println(path.toString());
                 Files.copy(image.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
             }
             session.setAttribute("succMsg", "product saved successfully");
@@ -164,12 +165,21 @@ public class AdminController {
 
     @PostMapping("/updateProduct")
     public String updateProduct(@ModelAttribute Product product, @RequestParam("file") MultipartFile image, HttpSession session) throws IOException {
-        Product updatedProduct = productService.updateProduct(product, image);
-        if (!ObjectUtils.isEmpty(updatedProduct)) {
-            session.setAttribute("succMsg", "product updated successfully");
-        }  else {
-            session.setAttribute("errorMsg", "Internal server error");
+        if(product.getDiscount() < 0 || product.getDiscount() > 100) {
+            session.setAttribute("errorMsg", "discount must be between 0 and 100");
+        } else if (product.getPrice() < 0) {
+            session.setAttribute("errorMsg", "price must be greater than 0");
+        } else if (product.getStock() < 0)
+            session.setAttribute("errorMsg", "stock must be greater than 0 and a whole number");
+        else {
+            Product updatedProduct = productService.updateProduct(product, image, session);
+            if (!ObjectUtils.isEmpty(updatedProduct)) {
+                session.setAttribute("succMsg", "product updated successfully");
+            }  else {
+                session.setAttribute("errorMsg", "Internal server error, Please double check for data validation");
+            }
         }
+
         return "redirect:/admin/editProduct/" + product.getId();
     }
 }
