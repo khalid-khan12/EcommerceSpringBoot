@@ -2,7 +2,9 @@ package com.ecom.shopping_cart.service;
 
 import com.ecom.shopping_cart.model.Product;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -15,5 +17,5 @@ public interface ProductService {
 
     public Product getProductById(Integer id);
 
-    public Product updateProduct(Product product);
+    public Product updateProduct(Product product, MultipartFile image) throws IOException;
 }

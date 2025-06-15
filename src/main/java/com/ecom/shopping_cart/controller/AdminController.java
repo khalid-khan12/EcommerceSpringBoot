@@ -164,33 +164,12 @@ public class AdminController {
 
     @PostMapping("/updateProduct")
     public String updateProduct(@ModelAttribute Product product, @RequestParam("file") MultipartFile image, HttpSession session) throws IOException {
-        Product dbProduct = productService.getProductById(product.getId());
-
-        String imageName = image.isEmpty() ? dbProduct.getImage() : image.getOriginalFilename();
-        dbProduct.setTitle(product.getTitle());
-        dbProduct.setPrice(product.getPrice());
-        dbProduct.setDescription(product.getDescription());
-        dbProduct.setStock(product.getStock());
-        dbProduct.setCategory(product.getCategory());
-
-        Product updatedProduct = productRepository.save(dbProduct);
-
-        if(!ObjectUtils.isEmpty(updatedProduct)) {
-            if(imageName != null) {
-                try {
-                    File saveFile = new ClassPathResource("static/img").getFile();
-                    Path path = Paths.get(saveFile.getAbsolutePath() + File.separator + "product_img" + File.separator + image.getOriginalFilename());
-                    System.out.println(path.toString());
-                    Files.copy(image.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
-                    session.setAttribute("succMsg", "product updated successfully");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            } else {
-                session.setAttribute("errorMsg", "Internal server error");
-            }
+        Product updatedProduct = productService.updateProduct(product, image);
+        if (!ObjectUtils.isEmpty(updatedProduct)) {
+            session.setAttribute("succMsg", "product updated successfully");
+        }  else {
+            session.setAttribute("errorMsg", "Internal server error");
         }
-
         return "redirect:/admin/editProduct/" + product.getId();
     }
 }
