@@ -28,7 +28,6 @@ public class AdminController {
 
     @Autowired
     private CategoryService categoryService;
-
     @Autowired
     private ProductService productService;
     @Autowired

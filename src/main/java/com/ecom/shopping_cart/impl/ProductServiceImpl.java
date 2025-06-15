@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -62,6 +63,7 @@ public class ProductServiceImpl implements ProductService {
         dbProduct.setImage(imageName);
         dbProduct.setStock(product.getStock());
         dbProduct.setDiscount(product.getDiscount());
+        dbProduct.setIsActive(product.getIsActive());
 
         Double discount = product.getPrice() * (product.getDiscount() / 100.0);
         Double discountPrice = product.getPrice() - discount;
@@ -83,6 +85,18 @@ public class ProductServiceImpl implements ProductService {
             return product;
         }
         return null;
+    }
+
+    @Override
+    public List<Product> getAllActiveProducts(String category) {
+        List<Product> products = null;
+        if(ObjectUtils.isEmpty(category)){
+            products = productRepository.findByIsActiveTrue();
+        } else {
+            products = productRepository.findByCategory(category);
+        }
+
+        return products;
     }
 
 

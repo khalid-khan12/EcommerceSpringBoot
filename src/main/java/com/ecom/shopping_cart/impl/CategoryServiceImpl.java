@@ -46,5 +46,11 @@ public class CategoryServiceImpl implements CategoryService {
         return category;
     }
 
+    @Override
+    public List<Category> getAllActiveCategories() {
+        List<Category> activeCategories = categoryRepository.findByActiveTrue();
+        return activeCategories;
+    }
+
 
 }
