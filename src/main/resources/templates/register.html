@@ -13,59 +13,70 @@
             </div>
             <div class="col-md-7 p-5">
                 <div class="card shadow p-4 mb-5 bg-body-tertiary rounded">
-                    <h4 class="text-center mb-4">Register</h4>
-                    <form id="userRegister">
+                    <div class="card-header text-center">
+                        <h4 class="text-center mb-4">Register</h4>
+                        <th:block th:if="${session.succMsg}">
+                            <p class="text-success fw-bold">[[${session.succMsg}]]</p>
+                            <th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
+                        </th:block>
+
+                        <th:block th:if="${session.errorMsg}">
+                            <p class="text-danger fw-bold">[[${session.errorMsg}]]</p>
+                            <th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
+                        </th:block>
+                    </div>
+                    <form action="/saveUser" enctype="multipart/form-data" method="post">
                         <div class="row mb-3">
                             <div class="col">
-                                <label for="name" class="form-label">Full Name</label>
-                                <input required class="form-control" id="name" name="name" type="text" />
+                                <label class="form-label">Full Name</label>
+                                <input required class="form-control" name="name" type="text"/>
                             </div>
                             <div class="col">
-                                <label for="mobileNumber" class="form-label">Mobile Number</label>
-                                <input required class="form-control" id="mobileNumber" name="mobileNumber" type="number" />
+                                <label class="form-label">Mobile Number</label>
+                                <input required class="form-control" name="mobileNumber" type="number" />
                             </div>
                         </div>
 
                         <div class="mb-3">
-                            <label for="email" class="form-label">Email</label>
-                            <input required class="form-control" id="email" name="email" type="email" />
+                            <label class="form-label">Email</label>
+                            <input required class="form-control" name="email" type="email" />
                         </div>
 
                         <div class="row mb-3">
                             <div class="col">
-                                <label for="address" class="form-label">Address</label>
-                                <input required class="form-control" id="address" name="address" type="text" />
+                                <label class="form-label">Address</label>
+                                <input required class="form-control" name="address" type="text" />
                             </div>
                             <div class="col">
-                                <label for="city" class="form-label">City</label>
-                                <input required class="form-control" id="city" name="city" type="text" />
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <div class="col">
-                                <label for="state" class="form-label">State</label>
-                                <input required class="form-control" id="state" name="state" type="text" />
-                            </div>
-                            <div class="col">
-                                <label for="pincode" class="form-label">Pincode</label>
-                                <input required class="form-control" id="pincode" name="pincode" type="number" />
+                                <label class="form-label">City</label>
+                                <input required class="form-control" name="city" type="text" />
                             </div>
                         </div>
 
                         <div class="row mb-3">
                             <div class="col">
-                                <label for="password" class="form-label">Password</label>
-                                <input required class="form-control" id="password" name="password" type="password" />
+                                <label  class="form-label">State</label>
+                                <input required class="form-control" name="state" type="text" />
                             </div>
                             <div class="col">
-                                <label for="confirmpassword" class="form-label">Confirm Password</label>
-                                <input required class="form-control" id="confirmpassword" name="confirmpassword" type="password" />
+                                <label class="form-label">Pincode</label>
+                                <input required class="form-control" name="pincode" type="number" />
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col">
+                                <label class="form-label">Password</label>
+                                <input required class="form-control" name="password" type="password" />
+                            </div>
+                            <div class="col">
+                                <label class="form-label">Confirm Password</label>
+                                <input required class="form-control" name="confirmpassword" type="password" />
                             </div>
                         </div>
                         <div class="mb-4">
-                            <label for="img" class="form-label">Profile Image</label>
-                            <input class="form-control" id="img" name="img" type="file" />
+                            <label class="form-label">Profile Image</label>
+                            <input class="form-control" name="img" type="file" />
                         </div>
                         <button type="submit" class="btn btn-primary w-100">Register</button>
                     </form>
